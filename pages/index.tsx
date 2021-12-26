@@ -1,26 +1,14 @@
+import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { PokemonClient } from "pokenode-ts";
+import { useState } from "react";
 
-const MAX_DEX_NUMBER = 493;
-
-const getRandomNumber = (notThis?: number) => {
-  let r = Math.floor(Math.random() * MAX_DEX_NUMBER + 1);
-  while (r == notThis) {
-    r = Math.floor(Math.random() * MAX_DEX_NUMBER + 1);
-  }
-  return r
-};
-
-const Home: NextPage = ()  => {
-  const pokemonID1 = getRandomNumber();
-  const pokemonID2 = getRandomNumber(pokemonID1);
-
-
-  const pokeApi = new PokemonClient();
-  const pokemon1 =  pokeApi.getPokemonById(pokemonID1);
-  const pokemon2 = pokeApi.getPokemonById(pokemonID2);
+const Home: NextPage = () => {
+  const [pokemonPair, setPokemonPair] = useState(
+    trpc.useQuery(["getPokemonPair"])
+  );
+  if (pokemonPair.isLoading  || !pokemonPair.data) return <div>Loading...</div>;
 
   return (
     <div>
@@ -34,17 +22,27 @@ const Home: NextPage = ()  => {
 
         <div className="border flex justify-center items-center">
           <div className="flex-col pb-2">
-            <div className="pt-2">{pokemonID1}</div>
+            <div className="pt-2 capitalize">
+              {pokemonPair.data.firstPokemon.name}
+            </div>
             <div className="p-2" />
-            <button className="bg-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={async () => setPokemonPair(await pokemonPair.refetch())}
+              className="bg-white text-black font-bold py-2 px-4 rounded-full"
+            >
               Rounder
             </button>
           </div>
           <div className="px-8">or</div>
           <div className="flex-col pb-2">
-            <div className="pt-2">{pokemonID2}</div>
+            <div className="pt-2 capitalize">
+              {pokemonPair.data.secondPokemon.name}
+            </div>
             <div className="p-2" />
-            <button className="bg-white text-black font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={async () => setPokemonPair(await pokemonPair.refetch())}
+              className="bg-white text-black font-bold py-2 px-4 rounded-full"
+            >
               Rounder
             </button>
           </div>
