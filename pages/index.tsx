@@ -1,14 +1,23 @@
 import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useState } from "react";
 
 const Home: NextPage = () => {
-  const [pokemonPair, setPokemonPair] = useState(
-    trpc.useQuery(["getPokemonPair"])
-  );
-  if (pokemonPair.isLoading  || !pokemonPair.data) return <div>Loading...</div>;
+  const {
+    data: pokemonPair,
+    refetch,
+    isLoading,
+  } = trpc.useQuery(["getPokemonPair"], {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading || !pokemonPair) return <div>Loading...</div>;
+
+  const vote = (id: number) => {
+    
+    refetch();
+  };
 
   return (
     <div>
@@ -23,11 +32,13 @@ const Home: NextPage = () => {
         <div className="border flex justify-center items-center">
           <div className="flex-col pb-2">
             <div className="pt-2 capitalize">
-              {pokemonPair.data.firstPokemon.name}
+              {pokemonPair.firstPokemon.name}
             </div>
             <div className="p-2" />
             <button
-              onClick={async () => setPokemonPair(await pokemonPair.refetch())}
+              onClick={async () => {
+                vote();
+              }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
             >
               Rounder
@@ -36,11 +47,13 @@ const Home: NextPage = () => {
           <div className="px-8">or</div>
           <div className="flex-col pb-2">
             <div className="pt-2 capitalize">
-              {pokemonPair.data.secondPokemon.name}
+              {pokemonPair.secondPokemon.name}
             </div>
             <div className="p-2" />
             <button
-              onClick={async () => setPokemonPair(await pokemonPair.refetch())}
+              onClick={async () => {
+                vote();
+              }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
             >
               Rounder
@@ -54,12 +67,5 @@ const Home: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {
-      data: null,
-    },
-  };
-};
 
 export default Home;
