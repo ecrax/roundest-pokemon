@@ -1,6 +1,7 @@
 import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const {
@@ -30,13 +31,15 @@ const Home: NextPage = () => {
         <h1 className="text-4xl text-center">Which Pokemon is Rounder?</h1>
 
         <div className="border flex justify-center items-center">
-          <div className="flex-col pb-2">
-            <div className="pt-2 capitalize">
+          <div className="flex-col pb-2 justify-items-center flex items-center">
+            <div className="pt-2 capitalize text-center">
               {pokemonPair.firstPokemon.name}
             </div>
             <div className="p-2" />
+            <Image src={pokemonPair.firstPokemon.spriteUrl} width={256} height={256}/>
+            <div className="p-2" />
             <button
-              onClick={async () => {
+              onClick={ () => {
                 vote();
               }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
@@ -45,13 +48,15 @@ const Home: NextPage = () => {
             </button>
           </div>
           <div className="px-8">or</div>
-          <div className="flex-col pb-2">
-            <div className="pt-2 capitalize">
+          <div className="flex-col pb-2 justify-items-center flex items-center">
+            <div className="pt-2 capitalize text-center">
               {pokemonPair.secondPokemon.name}
             </div>
             <div className="p-2" />
+            <Image src={pokemonPair.secondPokemon.spriteUrl} width={256} height={256}/>
+            <div className="p-2" />
             <button
-              onClick={async () => {
+              onClick={ () => {
                 vote();
               }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
