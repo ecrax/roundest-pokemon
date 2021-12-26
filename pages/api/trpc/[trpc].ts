@@ -7,22 +7,24 @@ import { z } from "zod";
 const appRouter = trpc.router().query("getPokemonPair", {
   async resolve({ input }) {
     //console.log("I am fast");
-    
+
     //TODO: fetch data from own servers
     const pokeApi = new PokemonClient();
     const [id1, id2] = getPokemonPair();
     const pokemon1 = await pokeApi.getPokemonById(id1);
     const pokemon2 = await pokeApi.getPokemonById(id2);
     //console.log("I am slow");
-    
+
     return {
       firstPokemon: {
         name: pokemon1.name,
-        spriteUrl: pokemon1.sprites.front_default!
+        spriteUrl: pokemon1.sprites.front_default!,
+        id: pokemon1.id,
       },
       secondPokemon: {
         name: pokemon2.name,
-        spriteUrl: pokemon2.sprites.front_default!
+        spriteUrl: pokemon2.sprites.front_default!,
+        id: pokemon2.id,
       },
     };
   },

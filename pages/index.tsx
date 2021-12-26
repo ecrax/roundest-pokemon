@@ -40,7 +40,7 @@ const Home: NextPage = () => {
             <div className="p-2" />
             <button
               onClick={ () => {
-                vote();
+                vote(pokemonPair.firstPokemon.id);
               }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
             >
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
             <div className="p-2" />
             <button
               onClick={ () => {
-                vote();
+                vote(pokemonPair.secondPokemon.id);
               }}
               className="bg-white text-black font-bold py-2 px-4 rounded-full"
             >
