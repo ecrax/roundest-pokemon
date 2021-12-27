@@ -17,8 +17,15 @@ const Home: NextPage = () => {
   if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
   const vote = async (id: number) => {
-    if(!id) return;
-
+    
+    
+    if(!id) {
+      console.log("no id passed");
+      
+      return;
+    } 
+    console.log(id);
+    
     //console.log(id);
     if (id == pokemonPair.firstPokemon.id) {
       const { error } = await supabase.rpc("incrementvotesfor", {
