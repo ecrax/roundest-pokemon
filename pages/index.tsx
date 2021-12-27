@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       if (error) console.error(error);
 
       const { error: error2 } = await supabase.rpc("incrementvotesagainst", {
-        id: 1,
+        x: 1,
         row_id: pokemonPair.secondPokemon.id,
       });
       if (error2) console.error(error2);
