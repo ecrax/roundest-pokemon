@@ -9,22 +9,27 @@ const Home: NextPage = () => {
     data: pokemonPair,
     refetch,
     isLoading,
+    error
   } = trpc.useQuery(["getPokemonPair"], {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
 
+  console.log(error);
+  
+
   if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
   const vote = async (id: number) => {
     
+    console.log(error);
     
     if(!id) {
       console.log("no id passed");
       
       return;
     } 
-    console.log(id);
+    
     
     //console.log(id);
     if (id == pokemonPair.firstPokemon.id) {
