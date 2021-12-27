@@ -70,11 +70,24 @@ const Home: NextPage = () => {
   );
 };
 
-const PokemonCard: React.FC<{ vote: Function; pokemon: any }> = (props) => {
+const PokemonCard: React.FC<{
+  vote: Function;
+  pokemon: { name: string; spriteUrl: string; id: number; };
+}> = (props) => {
   return (
     <div className="flex-col pb-2 justify-items-center flex items-center">
       <div className="pt-2 capitalize text-center">{props.pokemon.name}</div>
-      
+      <div className="p-2" />
+      <Image src={props.pokemon.spriteUrl} width={256} height={256} />
+      <div className="p-2" />
+      <button
+        onClick={() => {
+          props.vote(props.pokemon.id);
+        }}
+        className="bg-white text-black font-bold py-2 px-4 rounded-full"
+      >
+        Rounder
+      </button>
     </div>
   );
 };
