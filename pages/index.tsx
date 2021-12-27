@@ -1,3 +1,4 @@
+import { supabase } from "@utils/initSupabase";
 import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -15,8 +16,34 @@ const Home: NextPage = () => {
 
   if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
-  const vote = (id: number) => {
-    
+  const vote = async (id: number) => {
+    //console.log(id);
+    if (id == pokemonPair.firstPokemon.id) {
+      const { error } = await supabase.rpc("incrementvotesfor", {
+        x: 1,
+        row_id: pokemonPair.firstPokemon.id,
+      });
+      if (error) console.error(error);
+
+      const { error: error2 } = await supabase.rpc("incrementvotesagainst", {
+        id: 1,
+        row_id: pokemonPair.secondPokemon.id,
+      });
+      if (error2) console.error(error2);
+    } else {
+      const { error } = await supabase.rpc("incrementvotesfor", {
+        x: 1,
+        row_id: pokemonPair.secondPokemon.id,
+      });
+      if (error) console.error(error);
+
+      const { error: error2 } = await supabase.rpc("incrementvotesagainst", {
+        x: 1,
+        row_id: pokemonPair.firstPokemon.id,
+      });
+      if (error2) console.error(error2);
+    }
+
     refetch();
   };
 
@@ -30,40 +57,11 @@ const Home: NextPage = () => {
       <main>
         <h1 className="text-4xl text-center">Which Pokemon is Rounder?</h1>
 
-        <div className="border flex justify-center items-center">
-          <div className="flex-col pb-2 justify-items-center flex items-center">
-            <div className="pt-2 capitalize text-center">
-              {pokemonPair.firstPokemon.name}
-            </div>
-            <div className="p-2" />
-            <Image src={pokemonPair.firstPokemon.spriteUrl} width={256} height={256}/>
-            <div className="p-2" />
-            <button
-              onClick={ () => {
-                vote(pokemonPair.firstPokemon.id);
-              }}
-              className="bg-white text-black font-bold py-2 px-4 rounded-full"
-            >
-              Rounder
-            </button>
-          </div>
-          <div className="px-8">or</div>
-          <div className="flex-col pb-2 justify-items-center flex items-center">
-            <div className="pt-2 capitalize text-center">
-              {pokemonPair.secondPokemon.name}
-            </div>
-            <div className="p-2" />
-            <Image src={pokemonPair.secondPokemon.spriteUrl} width={256} height={256}/>
-            <div className="p-2" />
-            <button
-              onClick={ () => {
-                vote(pokemonPair.secondPokemon.id);
-              }}
-              className="bg-white text-black font-bold py-2 px-4 rounded-full"
-            >
-              Rounder
-            </button>
-          </div>
+        <div className="flex justify-center items-center">
+          <PokemonCard pokemon={pokemonPair.firstPokemon} vote={vote} />
+
+          <div className="px-8 italic">or</div>
+          <PokemonCard pokemon={pokemonPair.secondPokemon} vote={vote} />
         </div>
       </main>
 
@@ -72,5 +70,23 @@ const Home: NextPage = () => {
   );
 };
 
+const PokemonCard: React.FC<{ vote: Function; pokemon: any }> = (props) => {
+  return (
+    <div className="flex-col pb-2 justify-items-center flex items-center">
+      <div className="pt-2 capitalize text-center">{props.pokemon.name}</div>
+      <div className="p-2" />
+      <Image src={props.pokemon.spriteUrl} width={256} height={256} />
+      <div className="p-2" />
+      <button
+        onClick={() => {
+          props.vote(props.pokemon.id);
+        }}
+        className="bg-white text-black font-bold py-2 px-4 rounded-full"
+      >
+        Rounder
+      </button>
+    </div>
+  );
+};
 
 export default Home;

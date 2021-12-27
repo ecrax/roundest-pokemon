@@ -18,6 +18,8 @@ const insertData = async () => {
     spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
       index + 1
     }.png`,
+    votesFor: 0,
+    votesAgainst: 0,
   }));
   const { error } = await supabase.from("pokemon").insert(pokeMap);
   console.error(error);
