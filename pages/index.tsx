@@ -17,6 +17,8 @@ const Home: NextPage = () => {
   if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
   const vote = async (id: number) => {
+    if(!id) return;
+
     //console.log(id);
     if (id == pokemonPair.firstPokemon.id) {
       const { error } = await supabase.rpc("incrementvotesfor", {
@@ -47,6 +49,9 @@ const Home: NextPage = () => {
     refetch();
   };
 
+  console.log("Pokemon Pair",pokemonPair);
+  
+
   return (
     <div>
       <Head>
@@ -72,19 +77,18 @@ const Home: NextPage = () => {
 
 const PokemonCard: React.FC<{
   vote: Function;
-  pokemon: { name: string; spriteUrl: string; id: number; };
+  pokemon: { name: string; spriteUrl: string; id: number; } | undefined;
 }> = (props) => {
-  console.log(props.pokemon);
   
   return (
     <div className="flex-col pb-2 justify-items-center flex items-center">
-      <div className="pt-2 capitalize text-center">{props.pokemon.name}</div>
+      <div className="pt-2 capitalize text-center">{props.pokemon?.name}</div>
       <div className="p-2" />
-      <Image src={props.pokemon.spriteUrl} width={256} height={256} />
+      <Image src={props.pokemon?.spriteUrl!} width={256} height={256} />
       <div className="p-2" />
       <button
         onClick={() => {
-          props.vote(props.pokemon.id);
+          props.vote(props.pokemon?.id);
         }}
         className="bg-white text-black font-bold py-2 px-4 rounded-full"
       >
