@@ -1,31 +1,31 @@
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import { getPokemonPair } from "@utils/getRandomPokemon";
-import { PokemonClient } from "pokenode-ts";
+import { supabase } from "@utils/initSupabase";
 import { z } from "zod";
+
+interface Pokemon {
+  name: string;
+  spriteUrl: string;
+  id: number;
+}
 
 const appRouter = trpc.router().query("getPokemonPair", {
   async resolve({ input }) {
-    //console.log("I am fast");
 
-    //TODO: fetch data from own servers
-    const pokeApi = new PokemonClient();
     const [id1, id2] = getPokemonPair();
-    const pokemon1 = await pokeApi.getPokemonById(id1);
-    const pokemon2 = await pokeApi.getPokemonById(id2);
-    //console.log("I am slow");
+    const { data: dataOne } = await supabase
+      .from("pokemon")
+      .select("id, spriteUrl, name")
+      .eq("id", id1);
+    const { data: dataTwo } = await supabase
+      .from("pokemon")
+      .select("id, spriteUrl, name")
+      .eq("id", id2);
 
     return {
-      firstPokemon: {
-        name: pokemon1.name,
-        spriteUrl: pokemon1.sprites.front_default!,
-        id: pokemon1.id,
-      },
-      secondPokemon: {
-        name: pokemon2.name,
-        spriteUrl: pokemon2.sprites.front_default!,
-        id: pokemon2.id,
-      },
+      firstPokemon: dataOne?.at(0),
+      secondPokemon: dataTwo?.at(0),
     };
   },
 });
