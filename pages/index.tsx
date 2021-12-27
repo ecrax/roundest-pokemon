@@ -74,6 +74,8 @@ const PokemonCard: React.FC<{
   vote: Function;
   pokemon: { name: string; spriteUrl: string; id: number; };
 }> = (props) => {
+  console.log(pokemon);
+  
   return (
     <div className="flex-col pb-2 justify-items-center flex items-center">
       <div className="pt-2 capitalize text-center">{props.pokemon.name}</div>
