@@ -23,6 +23,10 @@ const appRouter = trpc.router().query("getPokemonPair", {
       .select("id, spriteUrl, name")
       .eq("id", id2);
 
+    if(!dataOne) console.error("dataOne");
+    if(!dataTwo) console.error("dataTwo");
+    
+
     return {
       firstPokemon: dataOne?.at(0),
       secondPokemon: dataTwo?.at(0),

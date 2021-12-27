@@ -58,10 +58,7 @@ const Home: NextPage = () => {
         <h1 className="text-4xl text-center">Which Pokemon is Rounder?</h1>
 
         <div className="flex justify-center items-center">
-          <PokemonCard pokemon={pokemonPair.firstPokemon} vote={vote} />
-
-          <div className="px-8 italic">or</div>
-          <PokemonCard pokemon={pokemonPair.secondPokemon} vote={vote} />
+          
         </div>
       </main>
 
