@@ -1,5 +1,6 @@
 {
   "name": "roundest-pokemon",
+  "description": "A website to answer which pokemon is the roundest.",
   "private": true,
   "scripts": {
     "dev": "next dev",
