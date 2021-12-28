@@ -1,16 +1,14 @@
 import { supabase } from "@utils/initSupabase";
-import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps } from "next";
 import { getPokemonFromDb } from "@utils/getPokemonFromDb";
 import { useState } from "react";
 
-
-const Home: NextPage<{pokemonPair: any;}> = (props) => {
+const Home: NextPage<{ pokemonPair: any }> = (props) => {
   //let pokemonPair = props.pokemonPair;
-  const [pokemonPair, setPokemonPair] = useState(props.pokemonPair)
+  const [pokemonPair, setPokemonPair] = useState(props.pokemonPair);
 
   //if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
@@ -105,16 +103,13 @@ const PokemonCard: React.FC<{
   );
 };
 
-
-
-export const getServerSideProps:GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const pokemonPair = await getPokemonFromDb();
   return {
-    props:{
-      pokemonPair:pokemonPair
-    }
-  }
-}
-
+    props: {
+      pokemonPair: pokemonPair,
+    },
+  };
+};
 
 export default Home;
