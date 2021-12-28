@@ -1,5 +1,6 @@
 import { supabase } from "@utils/initSupabase";
 import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import Image from "next/image";
 
 interface Pokemon {
@@ -17,6 +18,11 @@ const genPercent = (p: Pokemon) => {
 const Results: NextPage<{ pokemon: any }> = (props) => {
   return (
     <div>
+      <Head>
+        <title>Roundest Pokemon | Results</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <h1 className="text-4xl text-center p-8">Results</h1>
 
       <div>

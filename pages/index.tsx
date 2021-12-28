@@ -5,7 +5,6 @@ import Image from "next/image";
 import { GetServerSideProps } from "next";
 import { getPokemonFromDb } from "@utils/getPokemonFromDb";
 import { useState } from "react";
-import { isFloat32Array } from "util/types";
 import Link from "next/link";
 
 const Home: NextPage<{ pokemonPair: any }> = (props) => {
