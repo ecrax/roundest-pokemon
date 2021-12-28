@@ -74,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       pokemon: data,
     },
+    revalidate: 60,
   };
 };
 
