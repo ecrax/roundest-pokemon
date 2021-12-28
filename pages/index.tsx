@@ -7,21 +7,11 @@ import { getPokemonFromDb } from "@utils/getPokemonFromDb";
 import { useState } from "react";
 
 const Home: NextPage<{ pokemonPair: any }> = (props) => {
-  //let pokemonPair = props.pokemonPair;
   const [pokemonPair, setPokemonPair] = useState(props.pokemonPair);
 
-  //if (isLoading || !pokemonPair) return <div>Loading...</div>;
-
   const vote = async (id: number) => {
-    //console.log(error);
-
-    if (!id) {
-      //console.log("no id passed");
-
-      return;
-    }
-
-    //console.log(id);
+    if (!id) return;
+    
     if (id == pokemonPair.firstPokemon.id) {
       const { error } = await supabase.rpc("incrementvotesfor", {
         x: 1,
@@ -51,22 +41,20 @@ const Home: NextPage<{ pokemonPair: any }> = (props) => {
     setPokemonPair(await getPokemonFromDb());
   };
 
-  //console.log("Pokemon Pair",pokemonPair);
-
   return (
-    <div>
+    <div className="h-screen flex justify-center items-center">
       <Head>
         <title>Roundest Pokemon</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className="flex flex-col justify-between">
         <h1 className="text-4xl text-center">Which Pokemon is Rounder?</h1>
-
+        <div className="p-8"/>
         <div className="flex justify-center items-center">
           <PokemonCard pokemon={pokemonPair.firstPokemon} vote={vote} />
 
-          <div className="px-8 italic">or</div>
+          <div className="px-16 italic">or</div>
           <PokemonCard pokemon={pokemonPair.secondPokemon} vote={vote} />
         </div>
       </main>
@@ -97,7 +85,7 @@ const PokemonCard: React.FC<{
         }}
         className="bg-white text-black font-bold py-2 px-4 rounded-full"
       >
-        Rounder
+        This one
       </button>
     </div>
   );
