@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import { getPokemonFromDb } from "@utils/getPokemonFromDb";
 import { useState } from "react";
 import { isFloat32Array } from "util/types";
+import Link from "next/link";
 
 const Home: NextPage<{ pokemonPair: any }> = (props) => {
   const [pokemonPair, setPokemonPair] = useState(props.pokemonPair);
@@ -45,7 +46,7 @@ const Home: NextPage<{ pokemonPair: any }> = (props) => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center flex-col">
       <Head>
         <title>Roundest Pokemon</title>
         <link rel="icon" href="/favicon.ico" />
@@ -62,7 +63,11 @@ const Home: NextPage<{ pokemonPair: any }> = (props) => {
         </div>
       </main>
 
-      <footer></footer>
+      <footer className="pt-16 text-xl">
+        <Link href={"/results" } >Results</Link>
+        {" | "}
+        <Link href={"https://github.com/ecrax"}>Github</Link>
+      </footer>
     </div>
   );
 };
