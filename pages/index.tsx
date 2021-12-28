@@ -3,18 +3,16 @@ import { trpc } from "@utils/trpc";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { GetServerSideProps } from 'next';
+import { getPokemonFromDb } from "@utils/getPokemonFromDb";
+import { useState } from "react";
 
-const Home: NextPage = () => {
-  const {
-    data: pokemonPair,
-    refetch,
-    isLoading,
-  } = trpc.useQuery(["getPokemonPair"], {
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
 
-  if (isLoading || !pokemonPair) return <div>Loading...</div>;
+const Home: NextPage<{pokemonPair: any;}> = (props) => {
+  //let pokemonPair = props.pokemonPair;
+  const [pokemonPair, setPokemonPair] = useState(props.pokemonPair)
+
+  //if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
   const vote = async (id: number) => {
     //console.log(error);
@@ -52,7 +50,7 @@ const Home: NextPage = () => {
       if (error2) console.error(error2);
     }
 
-    refetch();
+    setPokemonPair(await getPokemonFromDb());
   };
 
   //console.log("Pokemon Pair",pokemonPair);
@@ -106,5 +104,17 @@ const PokemonCard: React.FC<{
     </div>
   );
 };
+
+
+
+export const getServerSideProps:GetServerSideProps = async (ctx) => {
+  const pokemonPair = await getPokemonFromDb();
+  return {
+    props:{
+      pokemonPair:pokemonPair
+    }
+  }
+}
+
 
 export default Home;
