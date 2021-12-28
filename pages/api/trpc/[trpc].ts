@@ -13,14 +13,14 @@ interface Pokemon {
 const appRouter = trpc.router().query("getPokemonPair", {
   async resolve({ input }) {
 
-    const [id1, id2] = getPokemonPair();
+    const [id1, id2] = getPokemonPair();    
     const { data: dataOne } = await supabase
       .from("pokemon")
-      .select("id, spriteUrl, name")
+      .select("id, name")
       .eq("id", id1);
     const { data: dataTwo } = await supabase
       .from("pokemon")
-      .select("id, spriteUrl, name")
+      .select("id, name")
       .eq("id", id2);
 
     if(!dataOne) console.error("dataOne");
