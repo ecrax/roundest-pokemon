@@ -15,15 +15,12 @@ export const getPokemonFromDb = async () => {
     if(errorOne) console.error(errorOne);
     if(errorTwo) console.error(errorTwo);
 
-    console.log(dataOne);
-    console.log(dataTwo);
-
     if (!dataOne || !dataTwo){
       throw new Error("No data received");
     }    
 
     return {
-      firstPokemon: dataOne?.at(0),
-      secondPokemon: dataTwo?.at(0),
+      firstPokemon: dataOne[0],
+      secondPokemon: dataTwo[0],
     };
 }
