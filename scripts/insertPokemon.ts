@@ -15,9 +15,6 @@ const insertData = async () => {
   const pokeMap = pokemon.results.map((p, index) => ({
     id: index + 1,
     name: (p as { name: string }).name,
-    spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-      index + 1
-    }.png`,
     votesFor: 0,
     votesAgainst: 0,
   }));

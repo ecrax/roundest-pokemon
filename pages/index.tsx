@@ -9,28 +9,22 @@ const Home: NextPage = () => {
     data: pokemonPair,
     refetch,
     isLoading,
-    error
   } = trpc.useQuery(["getPokemonPair"], {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
 
-  console.log(error);
-  
-
   if (isLoading || !pokemonPair) return <div>Loading...</div>;
 
   const vote = async (id: number) => {
-    
-    console.log(error);
-    
-    if(!id) {
-      console.log("no id passed");
-      
+    //console.log(error);
+
+    if (!id) {
+      //console.log("no id passed");
+
       return;
-    } 
-    
-    
+    }
+
     //console.log(id);
     if (id == pokemonPair.firstPokemon.id) {
       const { error } = await supabase.rpc("incrementvotesfor", {
@@ -61,8 +55,7 @@ const Home: NextPage = () => {
     refetch();
   };
 
-  console.log("Pokemon Pair",pokemonPair);
-  
+  //console.log("Pokemon Pair",pokemonPair);
 
   return (
     <div>
@@ -89,14 +82,18 @@ const Home: NextPage = () => {
 
 const PokemonCard: React.FC<{
   vote: Function;
-  pokemon: { name: string; spriteUrl: string; id: number; } | undefined;
+  pokemon: { name: string; spriteUrl: string; id: number } | undefined;
 }> = (props) => {
-  
   return (
     <div className="flex-col pb-2 justify-items-center flex items-center">
       <div className="pt-2 capitalize text-center">{props.pokemon?.name}</div>
       <div className="p-2" />
-      <Image src={props.pokemon?.spriteUrl!} width={256} height={256} />
+      <Image
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.pokemon?.id}.png`}
+        width={256}
+        height={256}
+        alt="Pokemon Image"
+      />
       <div className="p-2" />
       <button
         onClick={() => {
