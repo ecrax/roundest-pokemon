@@ -1,5 +1,5 @@
 import { supabase } from "@utils/initSupabase";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -65,7 +65,7 @@ const Results: NextPage<{ pokemon: any }> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   const { data, error } = await supabase.from("pokemon").select("*");
 
   if (error) console.error(error);
